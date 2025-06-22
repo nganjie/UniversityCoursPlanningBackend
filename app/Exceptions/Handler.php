@@ -1,31 +1,28 @@
-<?php
-
-use App\Http\Helpers\ApiResponse;
+<?php 
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
+class Handler extends Exception
+{
+     public function render($request, Throwable $exception)
+{
+    // Si c’est une requête API (par exemple avec le header Accept: application/json)
+    if ($request->expectsJson()) {
+        return $this->handleApiException($request, $exception);
+    }
 
-return Application::configure(basePath: dirname(__DIR__))
-    ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
-        health: '/up',
-    )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
-    })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (Exception $exception,  $request) {
-        if ($request->is('api/*')) {
-             $status = 500;
+    // Sinon, comportement normal (HTML, etc.)
+    return parent::render($request, $exception);
+}
+protected function handleApiException($request, Throwable $exception)
+{
+    // Par défaut
+    $status = 500;
     $message = 'Erreur serveur';
     $errors = [];
 
@@ -35,12 +32,6 @@ return Application::configure(basePath: dirname(__DIR__))
     } elseif ($exception instanceof ValidationException) {
         $status = 422;
         $message = 'Erreur de validation';
-        $messages = collect($exception->errors())->map(function ($messages, $field) {
-        return $field . ' : ' . implode(' ', $messages);
-    })->implode(' '); // Join tout en une seule phrase
-
-    $message = $messages;
-
         $errors = $exception->errors();
     } elseif ($exception instanceof ModelNotFoundException) {
         $status = 404;
@@ -60,13 +51,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $message = $exception->getMessage() ?: $message;
     }
 
-   /* return response()->json([
+    return response()->json([
         'success' => false,
         'message' => $message,
-        'errors' => $errors,
-        'status_code'=>$status
-    ], $status);*/
-    return ApiResponse::exception($message, $errors,$status);
-        }
-    });
-    })->create();
+        'errors' => $errors
+    ], $status);
+}
+
+}
+
