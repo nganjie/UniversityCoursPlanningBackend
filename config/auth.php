@@ -40,17 +40,17 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'api' => [
+        'admins' => [
             'driver' => 'sanctum',
             'provider' => 'admins',
             'hash' => true,
         ],
-        'enseignant_api' => [
+        'enseignants' => [
             'driver' => 'sanctum',
             'provider' => 'enseignants',
             'hash' => true,
         ],
-        'etudiant_api' => [
+        'etudiants' => [
             'driver' => 'sanctum',
             'provider' => 'etudiants',
             'hash' => true,
