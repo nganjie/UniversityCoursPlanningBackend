@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Enums\EtudiantStatusEnum;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EtudiantNiveau extends Model
 {
-    use HasUlids;
+    use HasFactory;
+    use HasUuids;
     public $incrementing = false;
      protected $fillable = [
         'id',

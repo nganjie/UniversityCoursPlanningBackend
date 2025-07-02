@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('enseignants', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('etablissement_id');
             $table->string('registration_number')->unique();
             $table->string('first_name');
             $table->string('last_name');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('etablissement_id')->references('id')->on('etablissements')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

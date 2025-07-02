@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\StatusEnum;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EnseignantMatiere extends Model
 {
-    use HasUlids;
+
+    use HasFactory;
+    use HasUuids;
     public $incrementing = false;
      protected $fillable = [
         'id',

@@ -23,9 +23,9 @@ class ApiResponse{
         return response()->json(['data' => null, 'message' => $message,'success'=>false,"error_code"=>204,"errors"=>null], 204);
     }
 
-    public static function created($data = [],$message = 'Data Created')
+    public static function created($data = [],$message = 'Data')
     {
-        return response()->json([ 'message' => $message, 'data' => $data,'success'=>true,"error_code"=>200,"errors"=>null], 201);
+        return response()->json([ 'message' => $message." Created successfully", 'data' => $data,'success'=>true,"error_code"=>200,"errors"=>null], 201);
     }
 
     public static function updated($message = 'Data Updated', $data = null)

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('etablissement_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign(columns: 'etablissement_id')->references('id')->on('etablissements')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

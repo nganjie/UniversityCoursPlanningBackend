@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Enums\BatimentEnum;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Batiment extends Model
 {
-    use HasUlids;
+    use HasUuids;
      public $incrementing = false;
      protected $fillable = [
         'id',

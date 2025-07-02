@@ -23,6 +23,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreign('niveau_id')->references('id')->on('niveaux')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('sous_niveau_id')->references('id')->on('sous_niveaux')->onDelete('cascade')->onUpdate('cascade');
+            
         });
     }
 

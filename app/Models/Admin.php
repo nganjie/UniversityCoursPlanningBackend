@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasUlids,HasApiTokens, HasFactory, Notifiable;
+    use HasUuids,HasApiTokens, HasFactory, Notifiable,HasRoles;
     public $incrementing = false;
     protected $fillable = [
         "first_name",
@@ -21,7 +23,8 @@ class Admin extends Authenticatable
         "password",
         "phone",
         "gender",
-        "role_id"
+        "role_id",
+        "etablissement_id",
     ];
     protected $casts=[
         "first_name"=>"string",
@@ -52,5 +55,8 @@ class Admin extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function etablissement():BelongsTo{
+        return $this->belongsTo(Etablissement::class);
     }
 }
